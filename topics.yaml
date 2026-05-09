@@ -1,0 +1,44 @@
+# /social-monitor 配置 — 改这里就改了你的关注话题
+
+# 英文话题（X / LinkedIn / Reddit 用）
+topics:
+  - "AI agent"
+  - "AI OS"
+  - "MCP"
+  - "Claude Code"
+
+# 中文话题（小红书 / 抖音 / 微博 用）
+topics_cn:
+  - "AI agent"
+  - "AI 智能体"
+  - "MCP"
+  - "Claude Code"
+
+# 平台开关
+platforms:
+  x: true
+  linkedin: true
+  reddit: true
+  xiaohongshu: true
+  douyin: true
+  bluesky: false   # 在主 Chrome 登录 bsky.app 后改 true
+  weibo: false     # 在主 Chrome 登录 weibo.com 后改 true
+
+# 互动门槛（低于这个数字的帖子被过滤）
+thresholds:
+  x:
+    min_faves: 500
+    min_views: 10000
+  linkedin: {}
+  reddit:
+    min_score: 50
+  xiaohongshu:
+    min_likes: 100
+  douyin: {}
+
+# 抓取深度
+top_n_per_topic: 5     # 每个 topic 取前 N 条
+deep_read_n: 2         # 前 N 条精读（点进去看评论）
+
+# 输出
+output_dir: ~/social-reports

@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+*.swp
+*.swo
+
+# Backup files
+*.bak
+*.bak.*
+*.tmp.*
+
+# Editor / IDE
+.vscode/
+.idea/
+*.iml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+*.log
+
+# Skill runtime artifacts (产生于用户机器，不该提交)
+seen.jsonl
+reports/
+social-reports/
+ruleset/
+
+# Sensitive — 任何 cookie / 密钥 / 配置秘密
+.env
+.env.*
+cookies*.json
+secrets.*
+*.token
+*.key
+*.pem
+config.local.*
+
+# Local Claude state (不应该被 push)
+.claude/
