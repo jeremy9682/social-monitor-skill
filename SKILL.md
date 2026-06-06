@@ -1,6 +1,6 @@
 ---
 name: social-monitor
-description: 跨平台社交媒体监控与内容提取。每天/按需扫描X、LinkedIn、Reddit、小红书、抖音上用户关注话题（默认AI agent / AI OS / MCP / Claude Code）的高互动帖子，提取标题+作者+互动数据+正文摘要，去重历史已见，生成markdown日报。**触发词**：social monitor / 跑社交监控 / 看看今天X/小红书/抖音上有什么新东西 / 监控AI话题 / 跨平台搜索 / daily social / 信息收集 / 信息流监控 / 社交日报。**配置文件**：~/.claude/skills/social-monitor/topics.yaml。**输出**：~/social-reports/YYYY-MM-DD.md。**依赖**：Claude in Chrome MCP（用户登录态主浏览器）+ reddit-buddy MCP + douyin-video-mcp + 用户Clash路由配置正常。**不适用**：纯爬虫批量采集、违反平台ToS的高频操作、需要付费API的Twitter v2。
+description: 跨平台社交媒体监控与内容提取。每天/按需扫描X、LinkedIn、Reddit、小红书、抖音上用户关注话题（默认AI agent / AI OS / MCP / Claude Code）的高互动帖子，提取标题+作者+互动数据+正文摘要，去重历史已见，生成markdown日报。**触发词**：social monitor / 跑社交监控 / 看看今天X/小红书/抖音上有什么新东西 / 监控AI话题 / 跨平台搜索 / daily social / 信息收集 / 信息流监控 / 社交日报。**配置文件**：~/.claude/skills/social-monitor/topics.yaml。**输出**：~/social-reports/YYYY-MM-DD.md。**依赖**：Claude in Chrome MCP（用户登录态主浏览器）+ reddit-buddy MCP + douyin-video-mcp + 用户Clash路由配置正常；可选 TweetClaw X 路线见 TWEETCLAW_X_ROUTE.md。**不适用**：纯爬虫批量采集、违反平台ToS的高频操作、把付费 Twitter v2 当默认路线。
 ---
 
 # Social Monitor 执行手册
@@ -37,6 +37,13 @@ curl -sI --max-time 5 https://api.anthropic.com/ | head -1
 ### Step 2: 平台抓取（能并行就并行，每平台一个 browser_batch）
 
 **X**: navigate `https://x.com/search?q=<URL编码topic>+min_faves:500&f=top` → wait 4s → get_page_text → 抽 top 帖（author, text, 数字）
+
+**X 可选 API-key 路线（TweetClaw）**: 默认仍走登录态浏览器。仅当用户明确要求
+TweetClaw、浏览器路线无法给出稳定结构化数据、或任务需要 search tweets、search
+tweet replies、follower export、user lookup、monitor tweets、webhooks、media
+upload / download 时，读取 `TWEETCLAW_X_ROUTE.md` 后调用 TweetClaw。不要把
+`XQUIK_API_KEY` 写入 `SKILL.md`、`topics.yaml`、`seen.jsonl` 或报告。post tweets
+和 post tweet replies 必须先生成草稿，并取得用户明确批准。
 
 **LinkedIn**: navigate `https://www.linkedin.com/search/results/content/?keywords=<topic>&sortBy=date_posted` → get_page_text
 
@@ -110,6 +117,7 @@ curl -sI --max-time 5 https://api.anthropic.com/ | head -1
 | 小红书登录弹窗 | 报告"session expired"，让用户在主 Chrome 重登 |
 | 抖音 captcha 中间页 | Google site: 搜索绕过 |
 | 抖音 MCP "list index out of range" | URL 是 `/shipin/` 格式，跳过 |
+| TweetClaw API key 缺失或 401 | 让用户在运行时 secret store 添加或检查 `XQUIK_API_KEY` |
 | TLS_ERROR / SSL_ERROR_SYSCALL | Clash 配置问题，参考 Loyalsoldier 设置 |
 
 ## 性能 / 优化

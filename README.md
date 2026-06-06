@@ -85,6 +85,7 @@
 | `douyin-video-mcp` MCP | ✅ | ✅ | ✅ |
 | 登录态浏览器 | Claude in Chrome（如已安装）| Codex Browser Use 插件（如已启用）| chrome-devtools-mcp（无登录态）|
 | `chrome-devtools-mcp`（公开内容/无登录） | ✅ | ✅ | ✅ |
+| TweetClaw X 路线（可选） | 读本仓库 runbook 后调用 | 读本仓库 runbook 后调用 | OpenClaw plugin |
 | SKILL.md 位置 | `~/.claude/skills/social-monitor/` | 读 OpenClaw symlink 或 Claude 路径 | `~/.openclaw/skills/social-monitor/`（symlink）|
 
 ### 部署到 Codex CLI
@@ -162,6 +163,20 @@ done
 - **OpenClaw → chrome-devtools-mcp**（无登录态——能爬公开内容，登录态站点需另外解决）
 
 **纯 MCP 工具完全等价** — Reddit + 抖音解析在哪个 agent 跑结果都一样。
+
+### 可选：TweetClaw X 路线
+
+默认路线仍然是登录态浏览器，适合每天 1 次的人类频率日报。需要结构化
+X/Twitter automation 时，可以增加
+[`@xquik/tweetclaw`](https://www.npmjs.com/package/@xquik/tweetclaw) 作为
+OpenClaw plugin 路线：search tweets、search tweet replies、follower export、
+user lookup、monitor tweets、webhooks、media upload / download，以及人工确认后的
+post tweets 和 post tweet replies。
+
+完整配置、安全边界和报告格式见
+[`TWEETCLAW_X_ROUTE.md`](TWEETCLAW_X_ROUTE.md)。这个路线不替代浏览器默认路线，
+只在用户明确要求 TweetClaw、浏览器路线无法返回稳定结构化数据、或任务需要 API-key
+工作流时启用。
 
 ## 你需要的前置环境
 
